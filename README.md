@@ -1,5 +1,5 @@
-# Analisis Transkriptomik GSE10072  
-### Differential Gene Expression dan Enrichment Pathway pada Adenokarsinoma Paru
+# Case Analysis Report
+### Differential Gene Expression and Enrichment Analysis of GSE10072 
 
 ---
 
