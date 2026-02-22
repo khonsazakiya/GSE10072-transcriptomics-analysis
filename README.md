@@ -1,122 +1,117 @@
-# Case Analysis Report  
-**Differential Gene Expression and Enrichment Analysis of GSE10072 (Lung Adenocarcinoma vs Normal Lung Tissue)**
+# Analisis Transkriptomik GSE10072  
+### Differential Gene Expression dan Enrichment Pathway pada Adenokarsinoma Paru
 
 ---
 
-## 1. Pendahuluan
+## Deskripsi Proyek
 
-Kanker paru merupakan penyebab utama kematian akibat kanker secara global, dengan lung adenocarcinoma sebagai subtipe paling umum dari non-small cell lung cancer (NSCLC). Perkembangan kanker melibatkan perubahan molekuler kompleks yang mencakup disregulasi proliferasi, angiogenesis, resistensi terhadap apoptosis, serta remodeling mikroenvironment tumor (Hanahan & Weinberg, 2011). Oleh karena itu, pendekatan transcriptomics menjadi penting untuk mengidentifikasi gen yang mengalami perubahan ekspresi signifikan antara jaringan kanker dan jaringan normal.  
+Repositori ini berisi analisis data mikroarray dari dataset **GSE10072** yang diperoleh dari Gene Expression Omnibus (GEO). Dataset ini membandingkan jaringan paru normal dengan jaringan adenokarsinoma paru.
 
-Dataset GSE10072 yang tersedia pada Gene Expression Omnibus (GEO) menyediakan profil ekspresi gen dari jaringan adenokarsinoma paru dan jaringan paru normal. Analisis Differentially Expressed Genes (DEGs) dilakukan menggunakan pendekatan linear modeling melalui paket limma, yang dikenal memiliki kekuatan statistik tinggi untuk analisis microarray maupun RNA-seq (Ritchie et al., 2015). Selanjutnya, interpretasi biologis dilakukan melalui analisis enrichment Gene Ontology (GO) dan KEGG pathway menggunakan clusterProfiler (Yu et al., 2012).
+Tujuan analisis:
+
+- Mengidentifikasi Differentially Expressed Genes (DEGs)
+- Memvisualisasikan pola ekspresi gen
+- Melakukan analisis Gene Ontology (GO)
+- Melakukan analisis KEGG pathway
+- Menyediakan pipeline analisis yang reproducible
 
 ---
 
-## 2. Metode
+## Informasi Dataset
 
-### 2.1 Sumber Data
+- **GEO Accession:** GSE10072  
+- **Platform:** Affymetrix Human Genome U133A (GPL96)  
+- **Total sampel:** 107  
+  - Adenokarsinoma paru: 58  
+  - Jaringan paru normal: 49  
 
-Dataset GSE10072 diunduh dari GEO (NCBI) dan terdiri dari 107 sampel dengan total 22.283 probe berbasis platform Affymetrix Human Genome U133A Array. Data ekspresi diekstraksi menggunakan paket GEOquery.
+---
 
-### 2.2 Analisis Differential Expression
+## Metodologi Analisis
 
-Analisis diferensial dilakukan menggunakan paket limma dengan model desain untuk membandingkan kelompok “Adenocarcinoma of the Lung” dan “Normal Lung Tissue”. Pendekatan empirical Bayes yang digunakan oleh limma meningkatkan stabilitas estimasi varians pada data microarray (Ritchie et al., 2015).
+Analisis dilakukan menggunakan **R (v4.5.2)** dengan paket:
 
-Gen dianggap signifikan jika memenuhi kriteria:
+- GEOquery  
+- limma  
+- ggplot2  
+- pheatmap  
+- umap  
+- clusterProfiler  
+- org.Hs.eg.db  
+- hgu133a.db  
 
-- adjusted p-value (FDR) < 0.01  
+### Kriteria DEG
+
 - |log2 Fold Change| > 1  
+- Adjusted p-value (FDR) < 0.01  
 
-### 2.3 Visualisasi
+---
 
-#### Boxplot
+## Ringkasan Hasil
 
-![Boxplot Expression Distribution](results/boxplot_GSE10072.png)
+- Total gen signifikan: **920**
+- Upregulated pada kanker: **336**
+- Downregulated pada kanker: **584**
 
-#### Density Plot
+### Proses Biologis Dominan (GO)
 
-![Density Plot](results/density_plot_GSE10072.png)
+- Organisasi matriks ekstraseluler
+- Regulasi angiogenesis
+- Adhesi sel
+- Regulasi perkembangan vaskular
 
-#### UMAP Plot
+### Jalur Signifikan (KEGG)
 
-![UMAP Plot](results/umap_GSE10072.png)
+- Focal adhesion
+- Integrin signaling pathway
+- ECM-receptor interaction
+- p53 signaling pathway
 
-#### Volcano Plot
+Hasil menunjukkan adanya perubahan signifikan pada organisasi matriks ekstraseluler dan jalur pensinyalan sel dalam adenokarsinoma paru.
 
-![Volcano Plot](results/volcano_plot_GSE10072.png)
+---
 
-#### Heatmap Top 50 DEG
+# Visualisasi
 
+## 1. Distribusi Ekspresi (Boxplot)
+![Boxplot](results/boxplot_GSE10072.png)
+
+## 2. Density Plot
+![Density](results/density_plot_GSE10072.png)
+
+## 3. UMAP Clustering
+![UMAP](results/umap_GSE10072.png)
+
+## 4. Volcano Plot
+![Volcano](results/volcano_plot_GSE10072.png)
+
+## 5. Heatmap Top 50 DEG
 ![Heatmap](results/heatmap_GSE10072.png)
 
----
+## 6. GO Enrichment
+![GO](results/GO_GSE10072.png)
 
-### 2.4 Analisis Enrichment
-
-Gen signifikan dikonversi menjadi Entrez ID menggunakan org.Hs.eg.db dan dianalisis menggunakan:
-
-- Gene Ontology (Biological Process)  
-- KEGG pathway enrichment  
+## 7. KEGG Enrichment
+![KEGG](results/KEGG_GSE10072.png)
 
 ---
 
-## 3. Hasil dan Interpretasi
-
-### 3.1 Differentially Expressed Genes
-
-Ditemukan total 920 gen signifikan, terdiri dari:
-
-- 336 gen upregulated pada kanker  
-- 584 gen downregulated pada kanker  
-
-Distribusi ini menunjukkan adanya pergeseran ekspresi gen yang substansial antara jaringan kanker dan jaringan normal.
 
 ---
 
-### 3.2 Gene Ontology (GO)
+## Requirements
 
-Analisis GO menunjukkan enrichment signifikan pada proses biologis berikut:
+- R ≥ 4.5.2  
+- RStudio (direkomendasikan)
 
-- Extracellular matrix organization  
-- Regulation of angiogenesis  
-- Wound healing  
+### Instalasi Paket
 
-![GO Enrichment](results/GO_GSE10072.png)
-
-Remodeling matriks ekstraseluler (ECM) merupakan salah satu karakteristik penting progresi tumor. Perubahan komposisi dan struktur ECM memfasilitasi invasi dan metastasis sel kanker melalui modifikasi adhesi dan migrasi sel (Hanahan & Weinberg, 2011).
-
----
-
-### 3.3 KEGG Pathway
-
-Pathway yang diperkaya secara signifikan meliputi:
-
-- Focal adhesion  
-- Integrin signaling  
-- ECM-receptor interaction  
-- p53 signaling pathway  
-
-![KEGG Enrichment](results/KEGG_GSE10072.png)
-
-Jalur p53 signaling pathway juga teridentifikasi signifikan. p53 merupakan tumor suppressor utama yang mengatur siklus sel dan apoptosis. Disregulasi jalur ini merupakan mekanisme umum pada berbagai jenis kanker, termasuk kanker paru (Hanahan & Weinberg, 2011).
-
----
-
-## 4. Kesimpulan
-
-Analisis transcriptomics pada dataset GSE10072 mengidentifikasi 920 gen yang mengalami perubahan ekspresi signifikan antara jaringan adenokarsinoma paru dan jaringan normal. Enrichment analysis menunjukkan keterlibatan kuat proses remodeling matriks ekstraseluler, angiogenesis, adhesi sel, serta jalur regulasi siklus sel.
-
-Temuan ini konsisten dengan konsep molekuler kanker modern yang menekankan peran mikroenvironment tumor dan sinyal adhesi dalam perkembangan dan invasi kanker (Hanahan & Weinberg, 2011).
-
----
-
-## Daftar Pustaka
-
-Ashburner, M., Ball, C. A., Blake, J. A., Botstein, D., Butler, H., Cherry, J. M., … & Sherlock, G. (2000). Gene ontology: Tool for the unification of biology. *Nature Genetics, 25*(1), 25–29. https://doi.org/10.1038/75556  
-
-Hanahan, D., & Weinberg, R. A. (2011). Hallmarks of cancer: The next generation. *Cell, 144*(5), 646–674. https://doi.org/10.1016/j.cell.2011.02.013  
-
-Kanehisa, M., & Goto, S. (2000). KEGG: Kyoto Encyclopedia of Genes and Genomes. *Nucleic Acids Research, 28*(1), 27–30. https://doi.org/10.1093/nar/28.1.27  
-
-Ritchie, M. E., Phipson, B., Wu, D., Hu, Y., Law, C. W., Shi, W., & Smyth, G. K. (2015). limma powers differential expression analyses for RNA-sequencing and microarray studies. *Nucleic Acids Research, 43*(7), e47. https://doi.org/10.1093/nar/gkv007  
-
-Yu, G., Wang, L.-G., Han, Y., & He, Q.-Y. (2012). clusterProfiler: An R package for comparing biological themes among gene clusters. *OMICS: A Journal of Integrative Biology, 16*(5), 284–287. https://doi.org/10.1089/omi.2011.0118  
+```r
+install.packages(c("ggplot2", "dplyr", "pheatmap", "umap"))
+BiocManager::install(c(
+  "GEOquery",
+  "limma",
+  "clusterProfiler",
+  "org.Hs.eg.db",
+  "hgu133a.db"
+))
